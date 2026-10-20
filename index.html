@@ -7,15 +7,25 @@
 <meta name="description" content="A research-use model of sample-to-variant-call time on AXELIOS 1, with every time saving tied to a product feature.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;700&family=JetBrains+Mono:wght@500&display=swap">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <div class="wrap">
   <header>
-    <div class="eyebrow">AXELIOS 1 · field tool · research use only · 30x whole genomes</div>
-    <h1>How much sooner does the research answer arrive?</h1>
-    <p class="lede">Enter how many genomes the lab sequences each week. The model works out how long a sample waits for a run, then adds prep, run and analysis time. Every change in the result points to the AXELIOS 1 feature that causes it.</p>
+    <div class="claim">
+      <div class="eyebrow">AXELIOS 1 Platform · Field tool · 30x whole genomes</div>
+      <h1>How much sooner does the research answer arrive?</h1>
+      <span class="pill">RUO · For research use only</span>
+      <p class="lede">Enter how many genomes the lab sequences each week. The model works out how long a sample waits for a run, then adds prep, run and analysis time. Every change in the result points to the AXELIOS 1 feature that causes it.</p>
+    </div>
+    <dl class="facts" aria-label="AXELIOS 1 published specs used in this model">
+      <div><dt>Genomes per 4 h run</dt><dd>~16 at 30x</dd></div>
+      <div><dt>Instrument time per run</dt><dd>~5.5 h</dd></div>
+      <div><dt>Library prep</dt><dd>~2–13 h</dd></div>
+      <div><dt>Max per day</dt><dd>64 genomes</dd></div>
+      <div><dt>Sensor reuse</dt><dd>20 runs / 90 d</dd></div>
+    </dl>
   </header>
 
   <section aria-labelledby="pick">
@@ -108,7 +118,7 @@
     </div>
 
     <div>
-      <h2 style="margin-bottom:8px">Where the time goes, and which feature moves it</h2>
+      <h2>Where the time goes, and which feature moves it</h2>
       <div class="tablewrap">
         <table>
           <thead><tr><th>Stage</th><th>Current</th><th>AXELIOS 1</th><th>Change</th><th>Product feature responsible</th></tr></thead>
@@ -136,8 +146,8 @@
 
   <footer>
     <div class="ruo"><b>Research use only.</b> AXELIOS 1 is not for use in diagnostic procedures. Values tagged Spec come from Roche's published AXELIOS 1 spec sheet. Values tagged Assumption describe a typical current high-output workflow and should be replaced with the customer's numbers. Cost per sample is not modeled. The average sample is assumed to wait half the time it takes a batch to fill.</div>
-    <div>Independent concept by Vaishanavi Saware, built from public sources. Not affiliated with or endorsed by Roche.</div>
-    <div>Sources</div>
+    <div class="credit">Independent concept by Vaishanavi Saware, built from public sources. Not affiliated with or endorsed by Roche.</div>
+    <div class="srclabel">Sources</div>
     <ol>
       <li><a href="https://diagnostics.roche.com/content/dam/acadia/salesaid/448/921/AXELIOS1_Spec%20Sheet_v1-0_LTR-Updated-Links.pdf" target="_blank" rel="noopener">AXELIOS 1 spec sheet (Roche)</a>: tunable runs of about 15 minutes to 4 hours; about 16 genomes at 30x per 4-hour run; about 5.5 hours per run; up to 64 genomes a day; prep about 2 to 13 hours; sensor reusable up to 20 runs within 90 days; on-instrument basecalling and alignment in parallel with sequencing.</li>
       <li><a href="https://www.roche.com/media/releases/med-cor-2026-06-29" target="_blank" rel="noopener">Roche AXELIOS 1 launch release (June 29, 2026)</a>: same-day whole-genome sequencing; small and large projects on one instrument; research use only.</li>
