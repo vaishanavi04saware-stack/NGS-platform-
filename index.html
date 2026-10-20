@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Time to Answer</title>
+<meta name="description" content="A research-use model of sample-to-variant-call time on AXELIOS 1, with every time saving tied to a product feature.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">AXELIOS 1 · field tool · research use only · 30x whole genomes</div>
+    <h1>How much sooner does the research answer arrive?</h1>
+    <p class="lede">Enter how many genomes the lab sequences each week. The model works out how long a sample waits for a run, then adds prep, run and analysis time. Every change in the result points to the AXELIOS 1 feature that causes it.</p>
+  </header>
+
+  <section aria-labelledby="pick">
+    <h2 id="pick">Lab profile</h2>
+    <div class="presets" id="presets" role="group" aria-label="Lab profile"></div>
+  </section>
+
+  <section class="panel" aria-live="polite">
+    <div class="inputs">
+      <fieldset class="lab-row">
+        <legend>The lab</legend>
+        <div class="field">
+          <label for="arrive">Genomes arriving per week</label>
+          <div class="row"><input id="arrive" type="number" min="0.5" step="1"><span class="unit">genomes / week</span></div>
+          <small>The customer's real number. This sets how long a sample waits for a run to fill.</small>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Current high-output platform</legend>
+        <div class="field">
+          <label for="b0"><i class="sw" style="background:var(--wait)"></i>Genomes per run to be cost-effective</label>
+          <div class="row"><input id="b0" type="number" min="1" step="1"><span class="unit">genomes</span></div>
+          <small><span class="tag assume">Assumption</span> A large flow cell is only economical when full.</small>
+        </div>
+        <div class="field">
+          <label for="p0"><i class="sw" style="background:var(--prep)"></i>Library prep</label>
+          <div class="row"><input id="p0" type="number" min="0" step="1"><span class="unit">hours</span></div>
+          <small><span class="tag assume">Assumption</span> Typical PCR-free WGS prep.</small>
+        </div>
+        <div class="field">
+          <label for="r0"><i class="sw" style="background:var(--run)"></i>Sequencing run</label>
+          <div class="row"><input id="r0" type="number" min="0" step="1"><span class="unit">hours</span></div>
+          <small><span class="tag assume">Assumption</span> High-output runs commonly take 1 to 2 days.</small>
+        </div>
+        <div class="field">
+          <label for="x0"><i class="sw" style="background:var(--ana)"></i>Analysis to variant calls</label>
+          <div class="row"><input id="x0" type="number" min="0" step="1"><span class="unit">hours</span></div>
+          <small><span class="tag assume">Assumption</span> Basecalling, alignment and calling run after the run ends.</small>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>AXELIOS 1</legend>
+        <div class="field">
+          <label for="b1"><i class="sw" style="background:var(--wait)"></i>Genomes per run</label>
+          <div class="row"><input id="b1" type="number" min="1" max="16" step="1"><span class="unit">genomes</span></div>
+          <small><span class="tag spec">Spec</span> About 16 genomes at 30x in a 4-hour run. Run time is tunable, so labs can run fewer.</small>
+        </div>
+        <div class="field">
+          <label for="p1"><i class="sw" style="background:var(--prep)"></i>Library prep</label>
+          <div class="row"><input id="p1" type="number" min="0" step="1"><span class="unit">hours</span></div>
+          <small><span class="tag spec">Spec</span> About 2 to 13 hours, by method. Set to the high end here.</small>
+        </div>
+        <div class="field">
+          <label for="r1"><i class="sw" style="background:var(--run)"></i>Sequencing run</label>
+          <div class="row"><input id="r1" type="number" min="0" step="0.5"><span class="unit">hours</span></div>
+          <small><span class="tag spec">Spec</span> About 5.5 hours of instrument time for one run.</small>
+        </div>
+        <div class="field">
+          <label for="x1"><i class="sw" style="background:var(--ana)"></i>Analysis to variant calls</label>
+          <div class="row"><input id="x1" type="number" min="0" step="0.5"><span class="unit">hours</span></div>
+          <small><span class="tag spec">Spec</span> Basecalling and alignment run during sequencing. <span class="tag assume">Assumption</span> Variant calling after.</small>
+        </div>
+      </fieldset>
+    </div>
+
+    <div class="result">
+      <div class="big">
+        <span class="num" id="saved"></span>
+        <span class="lbl">sooner, sample in to variant calls</span>
+        <span class="sub" id="pct"></span>
+      </div>
+      <div class="timeline">
+        <div>
+          <div class="tl-head"><b>Current platform</b><span id="tNow"></span></div>
+          <div class="bar" id="bar0"></div>
+        </div>
+        <div>
+          <div class="tl-head"><b>AXELIOS 1</b><span id="tNew"></span></div>
+          <div class="bar" id="bar1"></div>
+        </div>
+        <div class="legend">
+          <span><i class="sw" style="background:var(--prep)"></i>Library prep</span>
+          <span><i class="sw" style="background:var(--wait)"></i>Waiting for a run to fill</span>
+          <span><i class="sw" style="background:var(--run)"></i>Sequencing run</span>
+          <span><i class="sw" style="background:var(--ana)"></i>Analysis</span>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <h2 style="margin-bottom:8px">Where the time goes, and which feature moves it</h2>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>Stage</th><th>Current</th><th>AXELIOS 1</th><th>Change</th><th>Product feature responsible</th></tr></thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="callouts">
+      <div class="callout insight"><b id="insHead"></b><span id="insText"></span></div>
+      <div class="callout check"><b>Confirm with the customer</b><span id="checkText"></span></div>
+    </div>
+
+    <p class="early"><b>Why it matters for early detection:</b> research labs that get genomes back in about a day can run more studies a year. Those studies build the evidence for moving sequencing earlier in care, within research use today.</p>
+
+    <div class="talk">
+      <div class="talk-head">
+        <h2>Talk track</h2>
+        <button class="copy" id="copy" type="button">Copy</button>
+      </div>
+      <blockquote id="talk"></blockquote>
+      <button class="reset" id="reset" type="button">Reset this profile</button>
+    </div>
+  </section>
+
+  <footer>
+    <div class="ruo"><b>Research use only.</b> AXELIOS 1 is not for use in diagnostic procedures. Values tagged Spec come from Roche's published AXELIOS 1 spec sheet. Values tagged Assumption describe a typical current high-output workflow and should be replaced with the customer's numbers. Cost per sample is not modeled. The average sample is assumed to wait half the time it takes a batch to fill.</div>
+    <div>Independent concept by Vaishanavi Saware, built from public sources. Not affiliated with or endorsed by Roche.</div>
+    <div>Sources</div>
+    <ol>
+      <li><a href="https://diagnostics.roche.com/content/dam/acadia/salesaid/448/921/AXELIOS1_Spec%20Sheet_v1-0_LTR-Updated-Links.pdf" target="_blank" rel="noopener">AXELIOS 1 spec sheet (Roche)</a>: tunable runs of about 15 minutes to 4 hours; about 16 genomes at 30x per 4-hour run; about 5.5 hours per run; up to 64 genomes a day; prep about 2 to 13 hours; sensor reusable up to 20 runs within 90 days; on-instrument basecalling and alignment in parallel with sequencing.</li>
+      <li><a href="https://www.roche.com/media/releases/med-cor-2026-06-29" target="_blank" rel="noopener">Roche AXELIOS 1 launch release (June 29, 2026)</a>: same-day whole-genome sequencing; small and large projects on one instrument; research use only.</li>
+      <li><a href="https://www.labmanager.com/sequencing-without-compromise-eliminating-workflow-trade-offs-in-core-labs-35790" target="_blank" rel="noopener">Lab Manager on core-lab trade-offs</a>: cores choose between running a partly filled flow cell and waiting to fill it.</li>
+      <li><a href="https://dnatech.ucdavis.edu/faqs/when-can-i-expect-to-get-my-data" target="_blank" rel="noopener">UC Davis Genome Center FAQ</a>: high-output data about 2 to 5 weeks after library submission, varying with the queue.</li>
+    </ol>
+  </footer>
+</div>
+<script src="app.js"></script>
+</body>
+</html>
